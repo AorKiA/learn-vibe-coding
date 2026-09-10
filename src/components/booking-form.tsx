@@ -50,7 +50,7 @@ export function BookingForm({
     <Card className="max-w-xl">
       {/* noValidate hands validation to the server schema, so the tests exercise
           the real rules rather than the browser's built-in messages. */}
-      <form action={formAction} className="space-y-u1" noValidate>
+      <form action={formAction} className="space-y-u2" noValidate>
         {defaults.id && <input type="hidden" name="id" value={defaults.id} />}
 
         {state.message && !state.ok && <ErrorBanner>{state.message}</ErrorBanner>}
@@ -108,11 +108,11 @@ export function BookingForm({
           />
         </Field>
 
-        <div className="flex items-center gap-u1 pt-1">
+        <div className="flex items-center gap-u2 pt-1">
           <SubmitButton label={submitLabel} />
           <Link
             href="/bookings"
-            className="text-ink-muted hover:text-ink text-sm"
+            className="text-ink-muted hover:text-ink text-small"
           >
             ยกเลิก
           </Link>

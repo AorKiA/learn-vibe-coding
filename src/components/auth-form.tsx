@@ -39,16 +39,16 @@ export function AuthForm({
 
   return (
     <Card className="w-full max-w-sm">
-      <h1 className="text-xl font-semibold">
+      <h1 className="text-h1 font-semibold">
         {isSignup ? "สมัครสมาชิก" : "เข้าสู่ระบบ"}
       </h1>
-      <p className="text-ink-muted mt-1 text-sm">
+      <p className="text-ink-muted mt-u1 text-small">
         {isSignup
           ? "สร้างบัญชีเพื่อเริ่มจองห้องอ่านหนังสือ"
           : "เข้าสู่ระบบเพื่อจองห้องอ่านหนังสือ"}
       </p>
 
-      <form action={formAction} className="mt-u2 space-y-u1" noValidate>
+      <form action={formAction} className="mt-u3 space-y-u2" noValidate>
         {next && <input type="hidden" name="next" value={next} />}
 
         {initialError && !state.message && (
@@ -85,11 +85,11 @@ export function AuthForm({
         <SubmitButton label={isSignup ? "สมัครสมาชิก" : "เข้าสู่ระบบ"} />
       </form>
 
-      <p className="text-ink-muted mt-u2 text-center text-sm">
+      <p className="text-ink-muted mt-u3 text-center text-small">
         {isSignup ? "มีบัญชีอยู่แล้ว? " : "ยังไม่มีบัญชี? "}
         <Link
           href={isSignup ? "/login" : "/signup"}
-          className="text-primary-dark font-medium hover:underline"
+          className="text-accent font-medium hover:underline"
         >
           {isSignup ? "เข้าสู่ระบบ" : "สมัครสมาชิก"}
         </Link>

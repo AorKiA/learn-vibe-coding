@@ -28,11 +28,11 @@ export default async function RoomsPage({ searchParams }: PageProps<"/rooms">) {
   const taken = new Map(bookings.map((b) => [`${b.room_id}:${b.slot_id}`, b]));
 
   return (
-    <div className="space-y-u2">
-      <div className="flex flex-wrap items-end justify-between gap-u1">
+    <div className="space-y-u4">
+      <div className="flex flex-wrap items-end justify-between gap-u2">
         <div>
-          <h1 className="text-xl font-semibold">ห้องและช่วงเวลาว่าง</h1>
-          <p className="text-ink-muted mt-1 text-sm">
+          <h1 className="text-h1 font-semibold">ห้องและช่วงเวลาว่าง</h1>
+          <p className="text-ink-muted mt-u1 text-small">
             {formatThaiDate(date)} — เลือกช่องที่ว่างเพื่อจอง
           </p>
         </div>
@@ -48,20 +48,20 @@ export default async function RoomsPage({ searchParams }: PageProps<"/rooms">) {
         <EmptyState title="ยังไม่มีรอบเวลาในระบบ" />
       ) : (
         <Card className="overflow-x-auto p-0">
-          <table className="w-full min-w-3xl border-collapse text-sm">
+          <table className="w-full min-w-3xl border-collapse text-small">
             <caption className="sr-only">
               ตารางสถานะการจองแต่ละห้องในแต่ละรอบเวลา
             </caption>
             <thead>
-              <tr className="border-border border-b">
-                <th scope="col" className="p-u1 text-left font-medium">
+              <tr className="border-border bg-surface-muted border-b">
+                <th scope="col" className="p-u2 text-left font-medium">
                   ห้อง
                 </th>
                 {slots.map((slot) => (
                   <th
                     key={slot.id}
                     scope="col"
-                    className="p-u1 text-center font-medium whitespace-nowrap"
+                    className="p-u2 text-center font-medium whitespace-nowrap"
                   >
                     {slot.label}
                   </th>
@@ -71,7 +71,7 @@ export default async function RoomsPage({ searchParams }: PageProps<"/rooms">) {
             <tbody>
               {rooms.map((room) => (
                 <tr key={room.id} className="border-border border-b last:border-0">
-                  <th scope="row" className="p-u1 text-left font-medium">
+                  <th scope="row" className="p-u2 text-left font-medium">
                     {room.name}
                     <span className="text-ink-muted block text-xs font-normal">
                       {room.location} · {room.capacity} ที่นั่ง
@@ -85,11 +85,11 @@ export default async function RoomsPage({ searchParams }: PageProps<"/rooms">) {
 
                     if (!booking) {
                       return (
-                        <td key={slot.id} className="p-u1 text-center">
+                        <td key={slot.id} className="p-u2 text-center">
                           <Link
                             href={`/bookings/new?room=${room.id}&slot=${slot.id}&date=${date}`}
                             data-testid={`free-${cellId}`}
-                            className="text-primary-dark inline-block rounded-subtle border border-primary/40 px-2 py-1 text-xs hover:bg-primary/10"
+                            className="text-ink-muted hover:border-primary hover:bg-primary hover:text-primary-ink border-border-strong inline-block rounded-pill border px-[10.5px] py-[3.5px] text-xs font-medium transition-colors"
                           >
                             ว่าง · จอง
                           </Link>
@@ -100,7 +100,7 @@ export default async function RoomsPage({ searchParams }: PageProps<"/rooms">) {
                     return (
                       <td
                         key={slot.id}
-                        className="p-u1 text-center"
+                        className="p-u2 text-center"
                         data-testid={`busy-${cellId}`}
                       >
                         <Badge tone={mine ? "mine" : "busy"}>

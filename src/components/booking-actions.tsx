@@ -66,7 +66,7 @@ export function BookingActions({
           <>
             <Link
               href={`/bookings/${id}/edit`}
-              className="rounded-subtle border border-border-strong px-u1 py-2 text-sm hover:bg-surface-muted"
+              className="rounded-button border border-border-strong px-u1 py-2 text-small hover:bg-surface-muted"
             >
               แก้ไข
             </Link>

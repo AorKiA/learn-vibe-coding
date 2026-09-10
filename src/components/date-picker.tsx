@@ -12,8 +12,8 @@ export function DatePicker({ value, min }: { value: string; min: string }) {
   const [pending, startTransition] = useTransition();
 
   return (
-    <label className="flex items-center gap-u1">
-      <span className="text-sm font-medium whitespace-nowrap">วันที่</span>
+    <label className="flex items-center gap-u2">
+      <span className="text-small font-medium whitespace-nowrap">วันที่</span>
       <Input
         type="date"
         name="date"

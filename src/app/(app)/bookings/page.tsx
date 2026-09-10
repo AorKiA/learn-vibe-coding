@@ -31,14 +31,14 @@ export default async function BookingsPage({
         : null;
 
   return (
-    <div className="space-y-u2">
-      <div className="flex flex-wrap items-center justify-between gap-u1">
+    <div className="space-y-u4">
+      <div className="flex flex-wrap items-center justify-between gap-u2">
         <div>
-          <h1 className="text-xl font-semibold">
+          <h1 className="text-h1 font-semibold">
             {isAdmin ? "การจองทั้งหมด" : "การจองของฉัน"}
           </h1>
           {isAdmin && (
-            <p className="text-ink-muted mt-1 text-sm">
+            <p className="text-ink-muted mt-u1 text-small">
               คุณเป็นผู้ดูแลระบบ จึงเห็นและจัดการการจองของทุกคน
             </p>
           )}
@@ -61,16 +61,16 @@ export default async function BookingsPage({
           }
         />
       ) : (
-        <ul className="space-y-u1" data-testid="booking-list">
+        <ul className="space-y-u2" data-testid="booking-list">
           {bookings.map((booking) => {
             const canManage =
               booking.user_id === profile?.id || Boolean(isAdmin);
 
             return (
               <li key={booking.id}>
-                <Card className="flex flex-wrap items-start justify-between gap-u1">
+                <Card className="flex flex-wrap items-start justify-between gap-u2">
                   <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-u1">
+                    <div className="flex flex-wrap items-center gap-u2">
                       <span className="font-medium">
                         {booking.rooms?.name ?? "ห้องที่ถูกลบไปแล้ว"}
                       </span>
@@ -79,13 +79,13 @@ export default async function BookingsPage({
                       </Badge>
                     </div>
 
-                    <p className="text-ink-muted mt-1 text-sm">
+                    <p className="text-ink-muted mt-u1 text-small">
                       {formatThaiDate(booking.booking_date)} ·{" "}
                       {booking.time_slots?.label ?? "-"}
                       {booking.rooms?.location && ` · ${booking.rooms.location}`}
                     </p>
 
-                    <p className="mt-1 text-sm break-words">
+                    <p className="mt-u1 text-small break-words">
                       วัตถุประสงค์: {booking.purpose}
                     </p>
                   </div>

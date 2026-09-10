@@ -13,8 +13,8 @@ export default async function NewBookingPage({
     typeof params[key] === "string" ? (params[key] as string) : undefined;
 
   return (
-    <div className="space-y-u2">
-      <h1 className="text-xl font-semibold">จองห้อง</h1>
+    <div className="space-y-u4">
+      <h1 className="text-h1 font-semibold">จองห้อง</h1>
       <BookingForm
         action={createBooking}
         rooms={rooms}

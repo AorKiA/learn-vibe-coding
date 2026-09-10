@@ -21,7 +21,8 @@ Next.js App Router + TypeScript + Tailwind CSS + Supabase (PostgreSQL, Auth, RLS
 - RLS ปฏิเสธ update/delete โดย**ไม่ error** แต่คืน 0 rows — ทุก mutation ต้อง `.select()`
   แล้วเช็ก `data.length === 0` เป็น permission error
 - ห้ามมี `service_role` key หรือ secret ใด ๆ ใน repo หรือ frontend
-- Style ตาม `design.md`
+- Style ตาม `design2.md` (Genesis / PrimeNG — monochrome slate)
+  `design.md` เป็นของเดิม (PrimeReact Ultima) ไม่ใช้แล้ว
 
 ## Commands
 

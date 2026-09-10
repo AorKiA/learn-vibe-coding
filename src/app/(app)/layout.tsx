@@ -15,27 +15,27 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
   return (
     <div className="min-h-screen">
       <header className="bg-surface border-border border-b">
-        <nav className="mx-auto flex max-w-5xl flex-wrap items-center gap-u1 px-u2 py-u1">
-          <Link href="/rooms" className="font-heading mr-u1 text-base font-semibold">
+        <nav className="mx-auto flex max-w-5xl flex-wrap items-center gap-u3 px-u4 py-u3">
+          <Link href="/rooms" className="font-heading mr-u2 text-h3 font-semibold">
             จองห้องอ่านหนังสือ
           </Link>
 
-          <Link href="/rooms" className="text-ink-muted hover:text-primary-dark text-sm">
+          <Link href="/rooms" className="text-ink-muted hover:text-ink text-small">
             ห้องและช่วงเวลาว่าง
           </Link>
-          <Link href="/bookings" className="text-ink-muted hover:text-primary-dark text-sm">
+          <Link href="/bookings" className="text-ink-muted hover:text-ink text-small">
             การจองของฉัน
           </Link>
           {isAdmin && (
             <Link
               href="/admin/rooms"
-              className="text-ink-muted hover:text-primary-dark text-sm"
+              className="text-ink-muted hover:text-ink text-small"
             >
               จัดการห้อง
             </Link>
           )}
 
-          <div className="ml-auto flex items-center gap-u1">
+          <div className="ml-auto flex items-center gap-u2">
             <span className="text-ink-muted hidden text-xs sm:inline">
               {profile.email}
             </span>
@@ -43,7 +43,7 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
             <form action="/auth/signout" method="post">
               <button
                 type="submit"
-                className="text-ink-muted hover:text-danger text-sm"
+                className="text-ink-muted hover:text-danger text-small"
               >
                 ออกจากระบบ
               </button>
@@ -52,7 +52,7 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
         </nav>
       </header>
 
-      <main className="mx-auto max-w-5xl px-u2 py-u2">{children}</main>
+      <main className="mx-auto max-w-5xl px-u4 py-u5">{children}</main>
     </div>
   );
 }

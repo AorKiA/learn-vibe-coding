@@ -1,17 +1,16 @@
 import type { ComponentProps, ReactNode } from "react";
 
 /*
- * Small building blocks styled from design.md: 4px radius, Ultima card shadow,
- * #00bcd4 as the single CTA colour, spacing on the 10.5px grid.
+ * Building blocks styled from design2.md (Genesis / PrimeNG):
+ * 7px spacing grid, 21px card radius, pill-shaped controls, the layered
+ * blue-tinted shadow stack, and a palette that stays in greys apart from the
+ * two semantic colours defined in globals.css.
  */
 
-export function Card({
-  className = "",
-  ...props
-}: ComponentProps<"div">) {
+export function Card({ className = "", ...props }: ComponentProps<"div">) {
   return (
     <div
-      className={`bg-surface rounded-subtle shadow-card p-u2 ${className}`}
+      className={`bg-surface border-border rounded-card border p-u5 shadow-card ${className}`}
       {...props}
     />
   );
@@ -28,16 +27,18 @@ export function Button({
 }: ButtonProps) {
   const styles: Record<string, string> = {
     primary:
-      "bg-primary text-primary-ink hover:bg-primary-dark disabled:bg-ink-subtle",
+      "bg-primary text-primary-ink hover:bg-primary-hover disabled:bg-ink-subtle shadow-hairline",
     outline:
-      "bg-transparent text-ink border border-border-strong hover:bg-surface-muted",
+      "bg-surface text-ink border border-border-strong hover:bg-surface-muted",
     ghost: "bg-transparent text-ink-muted hover:bg-surface-muted",
-    danger: "bg-transparent text-danger border border-danger hover:bg-danger/5",
+    danger:
+      "bg-surface text-danger border border-danger/30 hover:bg-danger-soft",
   };
 
   return (
     <button
-      className={`rounded-subtle px-u2 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${styles[variant]} ${className}`}
+      // Pill geometry with 7px/17.5px padding and weight 500, per design2.
+      className={`rounded-pill px-[17.5px] py-u1 text-small font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${styles[variant]} ${className}`}
       {...props}
     />
   );
@@ -56,13 +57,13 @@ export function Field({
 }) {
   return (
     <label className="block">
-      <span className="text-ink mb-1 block text-sm font-medium">{label}</span>
+      <span className="text-ink mb-u1 block text-small font-medium">{label}</span>
       {children}
       {hint && !error && (
-        <span className="text-ink-muted mt-1 block text-xs">{hint}</span>
+        <span className="text-ink-subtle mt-u1 block text-xs">{hint}</span>
       )}
       {error && (
-        <span role="alert" className="text-danger mt-1 block text-xs">
+        <span role="alert" className="text-danger mt-u1 block text-xs">
           {error}
         </span>
       )}
@@ -71,8 +72,9 @@ export function Field({
 }
 
 const controlBase =
-  "w-full rounded-subtle border bg-surface px-3 py-2 text-sm text-ink " +
-  "focus:border-primary focus:outline-none disabled:bg-surface-muted";
+  "w-full rounded-button bg-surface px-u2 py-[10.5px] text-small text-ink border " +
+  "transition-colors focus:border-accent focus:outline-none disabled:bg-surface-muted " +
+  "placeholder:text-ink-subtle";
 
 export function Input({
   invalid,
@@ -123,7 +125,7 @@ export function ErrorBanner({ children }: { children: ReactNode }) {
     <div
       role="alert"
       data-testid="error-banner"
-      className="rounded-subtle border border-danger/30 bg-danger/5 text-danger px-u1 py-2 text-sm"
+      className="rounded-button border-danger/25 bg-danger-soft text-danger border px-u2 py-[10.5px] text-small"
     >
       {children}
     </div>
@@ -135,7 +137,7 @@ export function SuccessBanner({ children }: { children: ReactNode }) {
   return (
     <div
       role="status"
-      className="rounded-subtle border border-success/30 bg-success/5 text-success px-u1 py-2 text-sm"
+      className="rounded-button border-success/25 bg-success-soft text-success border px-u2 py-[10.5px] text-small"
     >
       {children}
     </div>
@@ -155,13 +157,13 @@ export function EmptyState({
   return (
     <div
       data-testid="empty-state"
-      className="border-border rounded-subtle border border-dashed px-u2 py-u3 text-center"
+      className="border-border rounded-card border border-dashed px-u4 py-u6 text-center"
     >
-      <p className="text-ink font-medium">{title}</p>
+      <p className="text-h3 text-ink font-semibold">{title}</p>
       {description && (
-        <p className="text-ink-muted mt-1 text-sm">{description}</p>
+        <p className="text-ink-muted mt-u1 text-small">{description}</p>
       )}
-      {action && <div className="mt-u2">{action}</div>}
+      {action && <div className="mt-u3">{action}</div>}
     </div>
   );
 }
@@ -174,14 +176,14 @@ export function Badge({
   children: ReactNode;
 }) {
   const tones: Record<string, string> = {
-    neutral: "bg-surface-muted text-ink-muted",
-    busy: "bg-danger/10 text-danger",
-    free: "bg-success/10 text-success",
-    mine: "bg-primary/10 text-primary-dark",
+    neutral: "bg-surface-muted text-ink-subtle border-border",
+    busy: "bg-danger-soft text-danger border-danger/20",
+    free: "bg-success-soft text-success border-success/20",
+    mine: "bg-slate-deep text-primary-ink border-transparent",
   };
   return (
     <span
-      className={`rounded-pill px-2 py-0.5 text-xs font-medium ${tones[tone]}`}
+      className={`rounded-pill border px-[10.5px] py-[3.5px] text-xs font-medium whitespace-nowrap ${tones[tone]}`}
     >
       {children}
     </span>

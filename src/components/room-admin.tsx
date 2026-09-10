@@ -28,7 +28,7 @@ export function NewRoomForm() {
   return (
     <Card className="max-w-xl">
       <h2 className="font-medium">เพิ่มห้องใหม่</h2>
-      <form action={formAction} className="mt-u1 space-y-u1" noValidate>
+      <form action={formAction} className="mt-u1 space-y-u2" noValidate>
         {state.message && !state.ok && <ErrorBanner>{state.message}</ErrorBanner>}
         {state.message && state.ok && <SuccessBanner>{state.message}</SuccessBanner>}
 
@@ -51,7 +51,7 @@ export function NewRoomForm() {
           <Input name="location" placeholder="อาคาร ... ชั้น ..." />
         </Field>
 
-        <label className="flex items-center gap-2 text-sm">
+        <label className="flex items-center gap-2 text-small">
           <input type="checkbox" name="is_active" defaultChecked />
           เปิดให้จองทันที
         </label>

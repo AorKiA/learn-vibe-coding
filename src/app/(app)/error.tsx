@@ -12,18 +12,18 @@ export default function AppError({
 }) {
   return (
     <Card>
-      <h1 className="text-lg font-semibold">เกิดข้อผิดพลาด</h1>
+      <h1 className="text-h2 font-semibold">เกิดข้อผิดพลาด</h1>
       <div className="mt-u1">
         <ErrorBanner>
           ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง
           {error.digest && (
-            <span className="text-ink-muted mt-1 block text-xs">
+            <span className="text-ink-muted mt-u1 block text-xs">
               รหัสอ้างอิง: {error.digest}
             </span>
           )}
         </ErrorBanner>
       </div>
-      <div className="mt-u2">
+      <div className="mt-u3">
         <Button onClick={reset}>ลองใหม่</Button>
       </div>
     </Card>
