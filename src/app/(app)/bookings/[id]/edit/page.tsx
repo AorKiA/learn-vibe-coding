@@ -26,8 +26,8 @@ export default async function EditBookingPage({
   const canEdit = booking.user_id === profile.id || profile.role === "admin";
   if (!canEdit) {
     return (
-      <div className="space-y-u4">
-        <h1 className="text-h1 font-semibold">แก้ไขการจอง</h1>
+      <div className="space-y-u5 settle">
+        <h1 className="text-h1 font-medium">แก้ไขการจอง</h1>
         <ErrorBanner>
           คุณไม่มีสิทธิ์แก้ไขรายการนี้ เพราะไม่ใช่การจองของคุณ
         </ErrorBanner>
@@ -37,7 +37,7 @@ export default async function EditBookingPage({
 
   return (
     <div className="space-y-u4">
-      <h1 className="text-h1 font-semibold">แก้ไขการจอง</h1>
+      <h1 className="text-h1 font-medium">แก้ไขการจอง</h1>
       <BookingForm
         action={updateBooking}
         rooms={rooms}

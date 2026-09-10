@@ -1,17 +1,23 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { IBM_Plex_Sans_Thai, Trirong } from "next/font/google";
 import "./globals.css";
 
 /**
- * design2 asks for InterDisplay, which Google Fonts does not distribute.
- * Inter is the same superfamily — InterDisplay is simply its display optical
- * size — so loading Inter with the optical-size axis is the closest faithful
- * match available.
+ * Both faces carry real Thai glyphs. A Latin-only display serif — Playfair,
+ * Cormorant and the rest of the usual premium shortlist — would fall back
+ * silently on every Thai heading, which is the whole interface.
  */
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin", "latin-ext"],
-  axes: ["opsz"],
+const trirong = Trirong({
+  variable: "--font-trirong",
+  weight: ["400", "500", "600"],
+  subsets: ["latin", "thai"],
+  display: "swap",
+});
+
+const plexThai = IBM_Plex_Sans_Thai({
+  variable: "--font-plex-thai",
+  weight: ["400", "500", "600"],
+  subsets: ["latin", "thai"],
   display: "swap",
 });
 
@@ -22,8 +28,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="th" className={`${inter.variable} h-full antialiased`}>
-      <body className="bg-bg text-ink min-h-full">{children}</body>
+    <html
+      lang="th"
+      className={`${trirong.variable} ${plexThai.variable} h-full antialiased`}
+    >
+      <body className="text-ink min-h-full">{children}</body>
     </html>
   );
 }

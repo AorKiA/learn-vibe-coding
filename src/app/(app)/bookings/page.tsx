@@ -4,8 +4,8 @@ import { formatThaiDate, getBookings } from "@/lib/data";
 import {
   Badge,
   Button,
-  Card,
   EmptyState,
+  HoverCard,
   SuccessBanner,
 } from "@/components/ui";
 import { BookingActions } from "@/components/booking-actions";
@@ -31,10 +31,10 @@ export default async function BookingsPage({
         : null;
 
   return (
-    <div className="space-y-u4">
+    <div className="space-y-u5">
       <div className="flex flex-wrap items-center justify-between gap-u2">
         <div>
-          <h1 className="text-h1 font-semibold">
+          <h1 className="text-h1 font-medium">
             {isAdmin ? "การจองทั้งหมด" : "การจองของฉัน"}
           </h1>
           {isAdmin && (
@@ -61,17 +61,17 @@ export default async function BookingsPage({
           }
         />
       ) : (
-        <ul className="space-y-u2" data-testid="booking-list">
+        <ul className="space-y-u3 settle" data-testid="booking-list">
           {bookings.map((booking) => {
             const canManage =
               booking.user_id === profile?.id || Boolean(isAdmin);
 
             return (
               <li key={booking.id}>
-                <Card className="flex flex-wrap items-start justify-between gap-u2">
+                <HoverCard className="flex flex-wrap items-start justify-between gap-u4">
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-u2">
-                      <span className="font-medium">
+                      <span className="font-heading text-base font-medium">
                         {booking.rooms?.name ?? "ห้องที่ถูกลบไปแล้ว"}
                       </span>
                       <Badge tone={booking.status === "active" ? "free" : "neutral"}>
@@ -95,7 +95,7 @@ export default async function BookingsPage({
                     status={booking.status}
                     canManage={canManage}
                   />
-                </Card>
+                </HoverCard>
               </li>
             );
           })}

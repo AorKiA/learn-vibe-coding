@@ -38,10 +38,10 @@ export function AuthForm({
   const isSignup = mode === "signup";
 
   return (
-    <Card className="w-full max-w-sm">
-      <h1 className="text-h1 font-semibold">
+    <Card className="w-full max-w-sm p-u5">
+      <h2 className="text-h2 font-medium">
         {isSignup ? "สมัครสมาชิก" : "เข้าสู่ระบบ"}
-      </h1>
+      </h2>
       <p className="text-ink-muted mt-u1 text-small">
         {isSignup
           ? "สร้างบัญชีเพื่อเริ่มจองห้องอ่านหนังสือ"
@@ -89,7 +89,7 @@ export function AuthForm({
         {isSignup ? "มีบัญชีอยู่แล้ว? " : "ยังไม่มีบัญชี? "}
         <Link
           href={isSignup ? "/login" : "/signup"}
-          className="text-accent font-medium hover:underline"
+          className="text-brass-ink font-medium underline underline-offset-4 decoration-brass/40 hover:decoration-brass"
         >
           {isSignup ? "เข้าสู่ระบบ" : "สมัครสมาชิก"}
         </Link>

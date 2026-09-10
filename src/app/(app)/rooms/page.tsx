@@ -7,7 +7,7 @@ import {
   getTimeSlots,
   todayISO,
 } from "@/lib/data";
-import { Badge, Card, EmptyState } from "@/components/ui";
+import { Badge, Card, EmptyState, Stat } from "@/components/ui";
 import { DatePicker } from "@/components/date-picker";
 
 export default async function RoomsPage({ searchParams }: PageProps<"/rooms">) {
@@ -26,18 +26,33 @@ export default async function RoomsPage({ searchParams }: PageProps<"/rooms">) {
 
   // room_id + slot_id -> the booking occupying it
   const taken = new Map(bookings.map((b) => [`${b.room_id}:${b.slot_id}`, b]));
+  const total = rooms.length * slots.length;
+  const seats = rooms.reduce((sum, room) => sum + room.capacity, 0);
 
   return (
-    <div className="space-y-u4">
-      <div className="flex flex-wrap items-end justify-between gap-u2">
-        <div>
-          <h1 className="text-h1 font-semibold">ห้องและช่วงเวลาว่าง</h1>
-          <p className="text-ink-muted mt-u1 text-small">
-            {formatThaiDate(date)} — เลือกช่องที่ว่างเพื่อจอง
+    <div className="space-y-u5 settle">
+      <header className="flex flex-wrap items-end justify-between gap-u4">
+        <div className="rule-brass">
+          <p className="text-brass-ink mb-u1 text-[11px] font-semibold tracking-[0.18em] uppercase">
+            {formatThaiDate(date)}
+          </p>
+          <h1 className="text-h1 max-w-lg font-medium">ห้องและช่วงเวลาว่าง</h1>
+          <p className="text-ink-muted text-small mt-u2 max-w-md">
+            เลือกช่องที่ว่างเพื่อจอง ระบบจะกันรอบที่ถูกจองแล้วให้อัตโนมัติ
           </p>
         </div>
         <DatePicker value={date} min={today} />
-      </div>
+      </header>
+
+      {rooms.length > 0 && slots.length > 0 && (
+        // The "3 beds · 2 baths · 180 sqm" device, doing honest work.
+        <Card className="flex flex-wrap items-center gap-u6 py-u4">
+          <Stat label="ช่องที่ว่าง" value={total - taken.size} />
+          <Stat label="ถูกจองแล้ว" value={taken.size} />
+          <Stat label="ห้องทั้งหมด" value={rooms.length} />
+          <Stat label="ที่นั่งรวม" value={seats} />
+        </Card>
+      )}
 
       {rooms.length === 0 ? (
         <EmptyState
@@ -48,20 +63,23 @@ export default async function RoomsPage({ searchParams }: PageProps<"/rooms">) {
         <EmptyState title="ยังไม่มีรอบเวลาในระบบ" />
       ) : (
         <Card className="overflow-x-auto p-0">
-          <table className="w-full min-w-3xl border-collapse text-small">
+          <table className="text-small w-full min-w-3xl border-collapse">
             <caption className="sr-only">
               ตารางสถานะการจองแต่ละห้องในแต่ละรอบเวลา
             </caption>
             <thead>
-              <tr className="border-border bg-surface-muted border-b">
-                <th scope="col" className="p-u2 text-left font-medium">
+              <tr className="border-border border-b">
+                <th
+                  scope="col"
+                  className="text-ink-subtle p-u3 text-left text-[11px] font-semibold tracking-[0.14em] uppercase"
+                >
                   ห้อง
                 </th>
                 {slots.map((slot) => (
                   <th
                     key={slot.id}
                     scope="col"
-                    className="p-u2 text-center font-medium whitespace-nowrap"
+                    className="text-ink-subtle p-u3 text-center text-[11px] font-semibold tracking-[0.14em] whitespace-nowrap uppercase"
                   >
                     {slot.label}
                   </th>
@@ -70,10 +88,15 @@ export default async function RoomsPage({ searchParams }: PageProps<"/rooms">) {
             </thead>
             <tbody>
               {rooms.map((room) => (
-                <tr key={room.id} className="border-border border-b last:border-0">
-                  <th scope="row" className="p-u2 text-left font-medium">
-                    {room.name}
-                    <span className="text-ink-muted block text-xs font-normal">
+                <tr
+                  key={room.id}
+                  className="border-border/70 hover:bg-surface/60 border-b transition-colors duration-300 last:border-0"
+                >
+                  <th scope="row" className="p-u3 text-left">
+                    <span className="font-heading text-ink block text-base font-medium">
+                      {room.name}
+                    </span>
+                    <span className="text-ink-subtle mt-0.5 block text-xs font-normal">
                       {room.location} · {room.capacity} ที่นั่ง
                     </span>
                   </th>
@@ -89,7 +112,7 @@ export default async function RoomsPage({ searchParams }: PageProps<"/rooms">) {
                           <Link
                             href={`/bookings/new?room=${room.id}&slot=${slot.id}&date=${date}`}
                             data-testid={`free-${cellId}`}
-                            className="text-ink-muted hover:border-primary hover:bg-primary hover:text-primary-ink border-border-strong inline-block rounded-pill border px-[10.5px] py-[3.5px] text-xs font-medium transition-colors"
+                            className="border-border-strong text-ink-muted hover:border-primary hover:bg-primary hover:text-primary-ink inline-block rounded-pill border px-u3 py-[5px] text-[11px] font-medium tracking-wide transition-all duration-300 ease-[var(--ease-calm)]"
                           >
                             ว่าง · จอง
                           </Link>

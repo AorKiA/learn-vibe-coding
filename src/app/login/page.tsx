@@ -1,4 +1,5 @@
 import { AuthForm } from "@/components/auth-form";
+import { AuthShell } from "@/components/auth-shell";
 import { signIn } from "@/lib/actions/auth";
 
 export default async function LoginPage({ searchParams }: PageProps<"/login">) {
@@ -7,8 +8,8 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   const error = typeof params.error === "string" ? params.error : undefined;
 
   return (
-    <main className="flex min-h-screen items-center justify-center p-u2">
+    <AuthShell>
       <AuthForm mode="signin" action={signIn} next={next} initialError={error} />
-    </main>
+    </AuthShell>
   );
 }
