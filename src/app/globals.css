@@ -1,53 +1,49 @@
 @import "tailwindcss";
 
 /*
- * Tokens from design2.md (Genesis / PrimeNG extraction).
+ * Genesis (design2.md) supplies the bones — Inter at 600, the 7px grid, 21px
+ * card radius, pill controls, the layered blue-tinted shadow. Its palette is
+ * five greys, which reads as flat in an app this sparse, so an indigo→violet
+ * accent and a tinted canvas are layered on top. The slate typography is
+ * untouched; the colour arrives on surfaces and interactive states only.
  *
- * Two deliberate departures from the file, both noted where they occur:
- *
- * 1. design2's "Type Scale" table is an extraction artifact — it lists Display
- *    at 252px and H1 at 238px, which no page uses. The "Type Hierarchy" table
- *    in the same file carries the real measured values (H1 52.5, H2 42,
- *    body 15.75), so the scale below follows that instead.
- *
- * 2. The palette is five greys and has no colour for success or failure. A
- *    booking grid has to distinguish "free" from "taken", and an error message
- *    that looks like body text is not an error message. Two muted semantic
- *    colours are added for that job only, desaturated to sit inside a
- *    monochrome system.
+ * Two notes carried over from the earlier pass:
+ *   - design2's "Type Scale" table is an extraction artifact (Display 252px).
+ *     The scale below follows its "Type Hierarchy" table, measured from real
+ *     elements.
+ *   - Its palette has nothing for success or failure. A booking grid must
+ *     separate free from taken, so semantic colours are defined here.
  */
 @theme {
   /* Surfaces */
-  --color-bg: #ffffff;
+  --color-bg: #f7f8fc;
   --color-surface: #ffffff;
-  --color-surface-muted: #f8fafc;
-  --color-border: #e5e5e5;
-  --color-border-strong: #cbd5e1;
+  --color-surface-muted: #f4f6fb;
+  --color-border: #e6e9f2;
+  --color-border-strong: #cbd3e4;
 
-  /* Text */
+  /* Text — Genesis slate, unchanged */
   --color-ink: #020617;
   --color-ink-muted: #64748b;
   --color-ink-subtle: #94a3b8;
-
-  /*
-   * design2 names #64748b as the CTA background, but white text on it is
-   * 4.09:1 — under the 4.5:1 that 14px text needs. #1e293b is in the same
-   * extracted palette and clears it comfortably, so it carries the filled
-   * buttons and #64748b stays on muted text and secondary accents.
-   */
-  --color-primary: #1e293b;
-  --color-primary-hover: #0f172a;
-  --color-primary-ink: #ffffff;
-  --color-accent: #64748b;
   --color-slate-deep: #0f172a;
+  --color-slate-mid: #1e293b;
 
-  /* Semantic — the justified additions */
-  --color-danger: #b4474e;
-  --color-danger-soft: #fdf3f4;
-  --color-success: #4a7c6f;
-  --color-success-soft: #f1f7f5;
+  /* Accent */
+  --color-primary: #4f46e5;
+  --color-primary-hover: #4338ca;
+  --color-primary-ink: #ffffff;
+  --color-violet: #7c3aed;
+  --color-cyan: #06b6d4;
+  --color-accent-soft: #eef2ff;
 
-  /* Spacing — base unit 7px */
+  /* Semantic */
+  --color-danger: #be123c;
+  --color-danger-soft: #fff1f4;
+  --color-success: #0f766e;
+  --color-success-soft: #eefbf8;
+
+  /* Spacing — Genesis base unit 7px */
   --spacing-u1: 7px;
   --spacing-u2: 14px;
   --spacing-u3: 21px;
@@ -62,21 +58,22 @@
   --radius-card-lg: 28px;
   --radius-pill: 9999px;
 
-  /* Elevation — the layered, blue-tinted stack from design2 */
+  /* Elevation — Genesis stack, warmed toward the indigo accent */
   --shadow-card:
-    rgba(120, 149, 206, 0.01) 0px 38px 15px -8px,
-    rgba(120, 149, 206, 0.04) 0px 21px 13px -8px,
-    rgba(120, 149, 206, 0.07) 0px 9px 9px -4px,
-    rgba(120, 149, 206, 0.08) 0px 2px 5px 0px;
+    rgba(79, 70, 229, 0.02) 0px 38px 15px -8px,
+    rgba(79, 70, 229, 0.05) 0px 21px 13px -8px,
+    rgba(15, 23, 42, 0.05) 0px 9px 9px -4px,
+    rgba(15, 23, 42, 0.05) 0px 2px 5px 0px;
   --shadow-raised:
-    rgba(120, 149, 206, 0.06) 0px 24px 32px -12px,
-    rgba(120, 149, 206, 0.1) 0px 12px 16px -6px,
-    rgba(120, 149, 206, 0.1) 0px 3px 6px 0px;
-  --shadow-hairline: rgba(0, 0, 0, 0.02) 0px 1px 2px 0px,
-    rgba(0, 0, 0, 0.04) 0px 1px 2px 0px;
+    rgba(79, 70, 229, 0.1) 0px 28px 40px -16px,
+    rgba(79, 70, 229, 0.1) 0px 14px 20px -8px,
+    rgba(15, 23, 42, 0.08) 0px 3px 8px 0px;
+  --shadow-glow: 0 8px 24px -8px rgba(79, 70, 229, 0.55);
+  --shadow-hairline:
+    rgba(15, 23, 42, 0.03) 0px 1px 2px 0px, rgba(15, 23, 42, 0.05) 0px 1px 2px 0px;
 
   /* Type — InterDisplay is not distributed publicly; Inter is the same
-     family's text optical size and is the closest faithful stand-in. */
+     superfamily's text optical size and the closest faithful stand-in. */
   --font-heading: var(--font-inter), Inter, sans-serif;
   --font-sans: var(--font-inter), Inter, sans-serif;
 
@@ -92,6 +89,40 @@
   --text-body--line-height: 24.5px;
   --text-small: 14px;
   --text-small--line-height: 21px;
+
+  /* Motion */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-rise: rise 0.5s var(--ease-out-soft) both;
+  --animate-fade: fade 0.4s var(--ease-out-soft) both;
+  --animate-shimmer: shimmer 1.6s linear infinite;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes shimmer {
+    from {
+      background-position: -200% 0;
+    }
+    to {
+      background-position: 200% 0;
+    }
+  }
 }
 
 html {
@@ -99,27 +130,71 @@ html {
 }
 
 body {
-  background: var(--color-bg);
   color: var(--color-ink);
   font-family: var(--font-sans);
   font-size: var(--text-body);
   line-height: var(--text-body--line-height);
   font-optical-sizing: auto;
+
+  /*
+   * Three wide, very low-alpha radial washes instead of a flat fill. They sit
+   * behind everything and do not scroll, so the page reads as lit rather than
+   * painted — the cards stay white and legible on top.
+   */
+  background-color: var(--color-bg);
+  background-image:
+    radial-gradient(60rem 40rem at 12% -10%, rgba(79, 70, 229, 0.14), transparent 60%),
+    radial-gradient(50rem 34rem at 92% 4%, rgba(6, 182, 212, 0.12), transparent 60%),
+    radial-gradient(46rem 30rem at 60% 100%, rgba(124, 58, 237, 0.1), transparent 62%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
 }
 
-h1,
-h2,
-h3,
-h4 {
-  font-family: var(--font-heading);
-  color: var(--color-ink);
-  font-weight: 600; /* design2: "use weight 600 for headings" */
-  letter-spacing: -0.01em;
+/*
+ * These must sit in @layer base. Unlayered CSS outranks anything in a layer, so
+ * a bare `h1 { color }` rule beats Tailwind's own utilities — which is why the
+ * gradient headings rendered solid black until this moved inside.
+ */
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading);
+    color: var(--color-ink);
+    font-weight: 600; /* design2: "use weight 600 for headings" */
+    letter-spacing: -0.015em;
+  }
 }
 
 /* Genesis sets --focus-ring: none. Restore a visible one so the app stays
    keyboard-navigable, tinted to the accent rather than a browser default. */
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
+}
+
+/*
+ * Stagger children of a list or grid as they enter. The delay is capped at six
+ * steps: past roughly a third of a second the page feels slow rather than alive.
+ */
+.stagger > * {
+  animation: var(--animate-rise);
+}
+.stagger > *:nth-child(1) { animation-delay: 0ms; }
+.stagger > *:nth-child(2) { animation-delay: 50ms; }
+.stagger > *:nth-child(3) { animation-delay: 100ms; }
+.stagger > *:nth-child(4) { animation-delay: 150ms; }
+.stagger > *:nth-child(5) { animation-delay: 200ms; }
+.stagger > *:nth-child(n + 6) { animation-delay: 250ms; }
+
+/* Motion is decoration here; nothing depends on it to be usable. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
