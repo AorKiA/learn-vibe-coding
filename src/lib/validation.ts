@@ -6,7 +6,14 @@ import { z } from "zod";
  * reachable by direct POST and therefore must validate independently.
  */
 
-const uuid = z.string().uuid({ message: "ค่าที่เลือกไม่ถูกต้อง" });
+/**
+ * Order matters. An empty select fails both checks, and toFieldErrors keeps the
+ * first issue per field — so "please choose" has to be declared before the
+ * format check, or the user is told the value is malformed when they simply
+ * have not picked one.
+ */
+const requiredUuid = (missing: string) =>
+  z.string().min(1, missing).uuid({ message: "ค่าที่เลือกไม่ถูกต้อง" });
 
 export const credentialsSchema = z.object({
   email: z
@@ -28,8 +35,8 @@ const todayISO = () => {
 };
 
 export const bookingSchema = z.object({
-  room_id: uuid.min(1, "กรุณาเลือกห้อง"),
-  slot_id: uuid.min(1, "กรุณาเลือกรอบเวลา"),
+  room_id: requiredUuid("กรุณาเลือกห้อง"),
+  slot_id: requiredUuid("กรุณาเลือกรอบเวลา"),
   booking_date: z
     .string()
     .min(1, "กรุณาเลือกวันที่")

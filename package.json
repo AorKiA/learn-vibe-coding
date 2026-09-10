@@ -8,7 +8,11 @@
     "start": "next start",
     "lint": "eslint",
     "typegen": "next typegen",
-    "typecheck": "next typegen && tsc --noEmit"
+    "typecheck": "next typegen && tsc --noEmit",
+    "test:e2e": "playwright test",
+    "check:rls": "node tests/checks/rls.mjs",
+    "check:secrets": "node tests/checks/secrets.mjs",
+    "verify": "node tests/verify.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
@@ -20,6 +24,7 @@
     "zod": "^4.6.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
