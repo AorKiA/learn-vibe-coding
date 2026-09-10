@@ -79,9 +79,16 @@ async function rest(user, path, init = {}) {
   return { status: res.status, body };
 }
 
-function futureDate(days) {
+/**
+ * A date this run is unlikely to share with a previous one.
+ *
+ * A fixed offset works once and then fails: the unique index this script exists
+ * to prove would reject the setup booking, and the script would report a
+ * working guard as a broken one.
+ */
+function unusedDate() {
   const d = new Date();
-  d.setDate(d.getDate() + days);
+  d.setDate(d.getDate() + 30 + Math.floor(Math.random() * 360));
   const p = (n) => String(n).padStart(2, "0");
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
 }
@@ -102,7 +109,7 @@ if (!Array.isArray(rooms) || rooms.length === 0 || !Array.isArray(slots) || slot
 
 // --- AT#6 -------------------------------------------------------------------
 
-const date6 = futureDate(21);
+const date6 = unusedDate();
 const { status: createStatus, body: created } = await rest(A, "bookings", {
   method: "POST",
   body: JSON.stringify({
@@ -167,7 +174,7 @@ const forged = await rest(B, "bookings", {
   body: JSON.stringify({
     room_id: rooms[0].id,
     slot_id: slots[1].id,
-    booking_date: futureDate(22),
+    booking_date: unusedDate(),
     purpose: "B forging A as the owner",
     user_id: A.id,
   }),
@@ -181,7 +188,7 @@ record(
 
 // --- AT#7 -------------------------------------------------------------------
 
-const date7 = futureDate(23);
+const date7 = unusedDate();
 const payload = {
   room_id: rooms[0].id,
   slot_id: slots[0].id,
@@ -233,6 +240,89 @@ record(
   (anonRooms.body?.length ?? 0) === 0 && (anonBookings.body?.length ?? 0) === 0,
   `rooms ${anonRooms.body?.length ?? "err"}, bookings ${anonBookings.body?.length ?? "err"}`,
 );
+
+// --- admin role -------------------------------------------------------------
+
+/**
+ * Needs a real admin, which only an operator can create: the app deliberately
+ * offers no way to promote yourself. Set ADMIN_EMAIL and ADMIN_PASSWORD in
+ * .env.local (gitignored) — the credentials must not live in the repository.
+ */
+const adminEmail = process.env.ADMIN_EMAIL;
+const adminPassword = process.env.ADMIN_PASSWORD;
+
+if (!adminEmail || !adminPassword) {
+  console.log(
+    "  SKIP  admin checks — set ADMIN_EMAIL and ADMIN_PASSWORD in .env.local",
+  );
+} else {
+  const res = await fetch(`${URL_}/auth/v1/token?grant_type=password`, {
+    method: "POST",
+    headers: { apikey: KEY, "content-type": "application/json" },
+    body: JSON.stringify({ email: adminEmail, password: adminPassword }),
+  });
+  const body = await res.json();
+  if (!body.access_token) {
+    record("ADMIN", "the admin account can sign in", false, `HTTP ${res.status}`);
+  } else {
+    const admin = { token: body.access_token, id: body.user.id };
+
+    const rpc = async (user) => {
+      const r = await fetch(`${URL_}/rest/v1/rpc/is_admin`, {
+        method: "POST",
+        headers: {
+          apikey: KEY,
+          Authorization: `Bearer ${user.token}`,
+          "content-type": "application/json",
+        },
+        body: "{}",
+      });
+      return r.json();
+    };
+
+    record("ADMIN", "is_admin() is true for the admin", (await rpc(admin)) === true);
+    record("ADMIN", "is_admin() is false for a normal user", (await rpc(A)) === false);
+
+    const roomName = `probe room ${Date.now()}`;
+    const adminInsert = await rest(admin, "rooms", {
+      method: "POST",
+      body: JSON.stringify({ name: roomName, capacity: 2, location: "probe" }),
+    });
+    record(
+      "ADMIN",
+      "an admin can create a room",
+      adminInsert.status === 201,
+      `HTTP ${adminInsert.status}`,
+    );
+
+    const userInsert = await rest(A, "rooms", {
+      method: "POST",
+      body: JSON.stringify({ name: `denied ${Date.now()}`, capacity: 2 }),
+    });
+    record(
+      "ADMIN",
+      "a normal user cannot create a room",
+      userInsert.status === 403,
+      `HTTP ${userInsert.status} (${userInsert.body?.code ?? "-"})`,
+    );
+
+    const adminSeesBooking = await rest(admin, `bookings?id=eq.${bookingId}`, {
+      method: "PATCH",
+      body: JSON.stringify({ purpose: "moderated by an admin" }),
+    });
+    record(
+      "ADMIN",
+      "an admin can moderate another user's booking",
+      Array.isArray(adminSeesBooking.body) && adminSeesBooking.body.length === 1,
+      `${adminSeesBooking.body?.length} row updated`,
+    );
+
+    // Leave the seed list as we found it.
+    if (adminInsert.status === 201) {
+      await rest(admin, `rooms?id=eq.${adminInsert.body[0].id}`, { method: "DELETE" });
+    }
+  }
+}
 
 // --- role escalation --------------------------------------------------------
 
