@@ -48,3 +48,20 @@ index มีอยู่, seed 5 rooms + 5 time_slots, role `anon` อ่าน�
 4. เลื่อน admin ทำผ่าน MCP `execute_sql` ได้เลย:
    `update profiles set role='admin' where email='...'`
    (auth.uid() เป็น null จึงผ่าน trigger prevent_role_escalation)
+
+## เปิดค้างไว้: หน้าที่ streaming ไม่ขึ้นใน preview browser
+
+อาการ: หน้าใน `(app)` ทุกหน้า (dynamic + มี `loading.tsx`) ค้างที่ skeleton
+ใน Browser pane ส่วน `/login` `/signup` (static) ขึ้นปกติ
+
+**พิสูจน์แล้วว่าฝั่ง server ไม่ได้พัง** — `fetch('/rooms')` จากในหน้าเว็บเอง
+คืน HTML 52KB ครบถ้วนใน 590ms มีชื่อห้องจริงและ label รอบเวลาครบ ปิดท้ายด้วย `</html>`
+และ server log ทุก request เป็น 200 ภายใน ~500ms ไม่มี error
+
+สมมติฐาน: Browser pane ไม่ resolve suspense จาก streamed response
+(`<!--$?-->` / `<template id="B:0">` ค้าง, console ไม่มี error)
+**ต้องยืนยันใน Chrome จริงก่อนสรุป** — ถ้าใน Chrome ปกติ แปลว่าเป็นข้อจำกัดของ pane
+ถ้าค้างเหมือนกัน ต้องไล่ต่อที่ hydration
+
+สิ่งที่ตัดออกไปแล้ว: RLS/DB (REST ตอบ 200 ใน 72-211ms), `Promise.all` +
+`cookies()` พร้อมกัน (เปลี่ยนเป็น sequential แล้วยังค้างเหมือนเดิม)
