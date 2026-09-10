@@ -38,8 +38,8 @@ export function AuthForm({
   const isSignup = mode === "signup";
 
   return (
-    <Card className="animate-rise w-full max-w-sm">
-      <h1 className="text-h2 from-primary via-violet to-primary bg-gradient-to-r bg-clip-text font-semibold text-transparent">
+    <Card className="w-full max-w-sm">
+      <h1 className="text-h1 font-semibold">
         {isSignup ? "สมัครสมาชิก" : "เข้าสู่ระบบ"}
       </h1>
       <p className="text-ink-muted mt-u1 text-small">

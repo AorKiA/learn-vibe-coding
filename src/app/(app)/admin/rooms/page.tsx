@@ -11,8 +11,8 @@ export default async function AdminRoomsPage() {
   // policy rooms_admin_write would still reject the write.
   if (profile?.role !== "admin") {
     return (
-      <div className="space-y-u4 animate-rise">
-        <h1 className="text-h1 font-semibold bg-gradient-to-r from-primary via-violet to-primary bg-clip-text text-transparent">จัดการห้อง</h1>
+      <div className="space-y-u4">
+        <h1 className="text-h1 font-semibold">จัดการห้อง</h1>
         <ErrorBanner>หน้านี้สำหรับผู้ดูแลระบบเท่านั้น</ErrorBanner>
       </div>
     );
@@ -22,7 +22,7 @@ export default async function AdminRoomsPage() {
 
   return (
     <div className="space-y-u4">
-      <h1 className="text-h1 font-semibold bg-gradient-to-r from-primary via-violet to-primary bg-clip-text text-transparent">จัดการห้อง</h1>
+      <h1 className="text-h1 font-semibold">จัดการห้อง</h1>
 
       <NewRoomForm />
 
